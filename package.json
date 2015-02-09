@@ -1,0 +1,11 @@
+{
+  "name": "node-pi-security",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.coffee",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Adam Butler <adam@lab.io>",
+  "license": "MIT"
+}
