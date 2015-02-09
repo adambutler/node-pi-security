@@ -9,6 +9,8 @@
   "author": "Adam Butler <adam@lab.io>",
   "license": "MIT",
   "dependencies": {
+    "open": "0.0.5",
+    "player": "^0.3.2",
     "resemble": "^1.2.0",
     "resemblejs": "^1.2.0"
   }

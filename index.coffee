@@ -1,22 +1,20 @@
 fs = require("fs")
+Player = require("player")
+
 resemble = require("resemble").resemble
 
 files = []
 
-fs.readFile './fixtures/a.jpg', (err, data) ->
+fs.readFile process.argv[2], (err, data) ->
   throw err if err
   files.push data
-  fs.readFile './fixtures/b.jpg', (err, data) ->
+  fs.readFile process.argv[3], (err, data) ->
     throw err if err
     files.push data
-    fs.readFile './fixtures/c.jpg', (err, data) ->
-      throw err if err
-      files.push data
 
-      resemble(files[0]).compareTo(files[1]).onComplete (data) ->
-        console.log(data)
-
-        resemble(files[1]).compareTo(files[2]).onComplete (data) ->
-          console.log(data)
+    resemble(files[0]).compareTo(files[1]).onComplete (data) ->
+      console.log(data)
+      if data.misMatchPercentage > 1
+        new Player('./alert.mp3').play()
 
 
