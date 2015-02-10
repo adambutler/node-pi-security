@@ -9,11 +9,20 @@ exec = require("exec")
 imagesnap = require("imagesnap")
 fs = require("fs")
 
+player = new Player('./alert.mp3')
+playing = false
+
+player.on "playing", (item) ->
+  playing = true
+
+player.on "playend", (item) ->
+  playing = false
+
 class Camera
   path: "./data"
 
   alert: ->
-    new Player('./alert.mp3').play()
+    player.play() unless playing
 
   freeSpace: (list) ->
     if list.length > 50
