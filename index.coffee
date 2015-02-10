@@ -21,6 +21,15 @@ player.on "playend", (item) ->
 class Camera
   path: "./data"
 
+  constructor: ->
+    @cleanup()
+
+  cleanup: ->
+    fs.readdir @path, (err, list) =>
+      list = list.filter((file) -> path.extname(file) is ".jpg")
+      for item in list
+        fs.unlink("#{@path}/#{item}")
+
   alert: ->
     player.play() unless playing
 
@@ -39,14 +48,11 @@ class Camera
       console.log list
 
       fs.readFile "#{@path}/#{list[0]}", (err, current) =>
-        fs.readFile "#{@path}/#{list[1]}", (err, last) =>
-
-          console.log current
-          console.log last
-
-          resemble(current).compareTo(last).onComplete (data) =>
-            console.log data
-            @alert() if data.misMatchPercentage > 20
+        if list[1]?
+          fs.readFile "#{@path}/#{list[1]}", (err, last) =>
+            resemble(current).compareTo(last).onComplete (data) =>
+              console.log data
+              @alert() if data.misMatchPercentage > 3
 
   capture: ->
     exec "imagesnap -w 1 -o '#{@path}/capture-#{@timestamp()}.jpg'", =>
