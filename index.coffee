@@ -62,5 +62,5 @@ camera = new Camera()
 
 setInterval ->
   camera.capture()
-, 3000
+, 2000
 
