@@ -1,3 +1,4 @@
 node_modules
 data
 alert.mp3
+.env

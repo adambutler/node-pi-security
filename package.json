@@ -13,10 +13,12 @@
     "imagesnap": "0.0.0",
     "imagesnapjs": "0.0.4",
     "lodash": "^3.1.0",
+    "node-env-file": "^0.1.6",
     "open": "0.0.5",
     "player": "^0.3.2",
     "resemble": "^1.2.0",
     "resemblejs": "^1.2.0",
+    "twilio": "^1.10.0",
     "webcam-capture": "^0.1.1"
   }
 }

@@ -1,13 +1,21 @@
 fs = require("fs")
 path = require("path")
+env = require "node-env-file"
 Player = require("player")
 resemble = require("resemble").resemble
 _ = require("lodash")
+
+try
+  env "#{__dirname}/.env"
+catch error
+  console.log error
 
 exec = require("exec")
 
 imagesnap = require("imagesnap")
 fs = require("fs")
+
+client = require("twilio")(process.env.twilioAccountSid, process.env.twilioAuthToken)
 
 player = new Player('./alert.mp3')
 playing = false
@@ -32,6 +40,13 @@ class Camera
 
   alert: ->
     player.play() unless playing
+    client.messages.create
+      body: "Alert"
+      to: process.env.twilioPhoneTo
+      from: process.env.twilioPhoneFrom
+    , (err, message) ->
+      console.log err
+      console.log message
 
   freeSpace: (list) ->
     if list.length > 50
@@ -52,7 +67,7 @@ class Camera
           fs.readFile "#{@path}/#{list[1]}", (err, last) =>
             resemble(current).compareTo(last).onComplete (data) =>
               console.log data
-              @alert() if data.misMatchPercentage > 3
+              @alert() if data.misMatchPercentage > 30
 
   capture: ->
     exec "imagesnap -w 1 -o '#{@path}/capture-#{@timestamp()}.jpg'", =>
