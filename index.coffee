@@ -39,14 +39,15 @@ class Camera
         fs.unlink("#{@path}/#{item}")
 
   alert: ->
-    player.play() unless playing
-    client.messages.create
-      body: "Alert"
-      to: process.env.twilioPhoneTo
-      from: process.env.twilioPhoneFrom
-    , (err, message) ->
-      console.log err
-      console.log message
+    unless playing
+      player.play()
+      client.messages.create
+        body: "Alert"
+        to: process.env.twilioPhoneTo
+        from: process.env.twilioPhoneFrom
+      , (err, message) ->
+        console.log err
+        console.log message
 
   freeSpace: (list) ->
     if list.length > 50
@@ -67,7 +68,7 @@ class Camera
           fs.readFile "#{@path}/#{list[1]}", (err, last) =>
             resemble(current).compareTo(last).onComplete (data) =>
               console.log data
-              @alert() if data.misMatchPercentage > 30
+              @alert() if data.misMatchPercentage > 50
 
   capture: ->
     exec "imagesnap -w 1 -o '#{@path}/capture-#{@timestamp()}.jpg'", =>
